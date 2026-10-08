@@ -2,7 +2,7 @@
 
 체크포인트 순서대로 진행한다. 현재 요청받은 체크포인트만 구현하며, 완료 표시는 해당 작업과 검증이 끝난 뒤 갱신한다.
 
-## 01 Initial Setup — 진행 중 (최초 Push 대기)
+## 01 Initial Setup — 완료
 
 - [x] 현재 폴더에 Vite + React + TypeScript 프로젝트 초기화
 - [x] 필요한 초기 dependency 설치, Three.js 및 불필요한 라이브러리 제외
@@ -12,7 +12,7 @@
 - [x] 개발 서버 실행 및 HTTP 응답 확인
 - [x] TypeScript 검사와 production build 확인
 - [x] Git main 브랜치와 origin 설정, references/ Git 추적 제외 확인
-- [ ] 첫 Push 성공 후 이 체크포인트를 완료로 갱신한다.
+- [x] 첫 Push 성공 후 원격 main 확인
 
 ## 02 Gallery Foundation — 미완료
 
