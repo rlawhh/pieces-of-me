@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { PointerEvent, WheelEvent } from 'react'
 import { artworks, type Artwork } from '../works/catalog'
+import { ChristmasScene } from '../works/christmas/ChristmasScene'
 
 interface GalleryProps {
   selectedId: string
@@ -255,11 +256,20 @@ export function PreviewArtwork({ artwork, large = false }: { artwork: Artwork; l
       className={`preview-artwork preview-artwork--${artwork.preview}${large ? ' is-large' : ''}`}
       aria-hidden="true"
     >
-      <span className="preview-label">VISUAL STUDY</span>
-      <span className="preview-shape preview-shape--one" />
-      <span className="preview-shape preview-shape--two" />
-      <span className="preview-shape preview-shape--three" />
-      <span className="preview-number">{artwork.number}</span>
+      {artwork.preview === 'christmas' ? (
+        <>
+          <ChristmasScene level={5} className="christmas-scene--preview" />
+          <span className="preview-number">{artwork.number}</span>
+        </>
+      ) : (
+        <>
+          <span className="preview-label">VISUAL STUDY</span>
+          <span className="preview-shape preview-shape--one" />
+          <span className="preview-shape preview-shape--two" />
+          <span className="preview-shape preview-shape--three" />
+          <span className="preview-number">{artwork.number}</span>
+        </>
+      )}
     </div>
   )
 }

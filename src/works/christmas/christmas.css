@@ -1,0 +1,128 @@
+.christmas-scene { display: block; width: 100%; height: 100%; }
+.preview-artwork.preview-artwork--christmas { background: #0d1820; }
+.christmas-scene--preview { position: absolute; inset: 0; }
+
+.tree-bulb, .tree-bulb-halo {
+  opacity: 0;
+  transition: opacity 460ms ease;
+  transition-delay: inherit;
+}
+.tree-light.is-lit .tree-bulb { opacity: var(--bulb-opacity, 1); }
+.tree-light.is-lit .tree-bulb-halo { opacity: var(--halo-opacity, .4); }
+.tree-star-rays { opacity: 0; transition: opacity 350ms ease; }
+.tree-star-halo { opacity: 0; transition: opacity 600ms ease; }
+.tree-star.is-lit .tree-star-rays { opacity: 1; transition-delay: 550ms; }
+.tree-star.is-lit .tree-star-halo { opacity: .5; transition-delay: 550ms; }
+.christmas-reflection { opacity: 0; transition: opacity 600ms ease; }
+.christmas-reflection.is-lit { opacity: .35; }
+
+.christmas-experience {
+  --christmas-edge: clamp(28px, 4.25vw, 76px);
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100svh;
+  min-height: 480px;
+  overflow: hidden;
+  background: #0d1820;
+  color: #f5f3ee;
+  font-family: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+.christmas-scene--experience { position: absolute; inset: 0; z-index: -2; }
+.christmas-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgb(3 9 15 / 49%), rgb(3 9 15 / 14%) 25%, transparent 43%, transparent 68%, rgb(3 9 15 / 42%)),
+    linear-gradient(0deg, rgb(3 9 15 / 62%), transparent 23%, transparent 80%, rgb(3 9 15 / 26%));
+}
+.christmas-header {
+  position: absolute;
+  top: clamp(25px, 4.2vh, 46px);
+  left: var(--christmas-edge);
+  right: var(--christmas-edge);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.christmas-brand { font-size: 20px; font-weight: 400; letter-spacing: -.045em; }
+.christmas-header-actions { display: flex; align-items: center; gap: 24px; }
+.christmas-index { font-size: 15px; letter-spacing: .09em; font-variant-numeric: tabular-nums; }
+.christmas-index > span { margin: 0 8px; opacity: .5; }
+.christmas-close {
+  display: grid; place-items: center; width: 28px; height: 28px; padding: 0;
+  border: 0; background: transparent; color: inherit; cursor: pointer;
+}
+.christmas-close span { position: relative; width: 16px; height: 16px; }
+.christmas-close span::before, .christmas-close span::after {
+  content: ''; position: absolute; top: 50%; left: 0; width: 16px; height: 1px;
+  background: currentColor; transform: rotate(45deg);
+}
+.christmas-close span::after { transform: rotate(-45deg); }
+.christmas-copy {
+  position: absolute;
+  top: 22%;
+  left: calc(var(--christmas-edge) + 2.5vw);
+  width: 32%;
+}
+.christmas-copy h1 {
+  margin: 0;
+  font-size: clamp(30px, 3.65vw, 60px);
+  font-weight: 300;
+  line-height: 1.12;
+  letter-spacing: -.045em;
+  text-shadow: 0 2px 14px rgb(0 0 0 / 22%);
+}
+.christmas-copy-rule { display: block; width: 38px; height: 1px; margin: 27px 0 22px; background: rgb(245 243 238 / 55%); }
+.christmas-copy p { margin: 0; color: rgb(245 243 238 / 88%); font-size: clamp(9px, .82vw, 13px); font-weight: 400; line-height: 2; letter-spacing: .18em; text-transform: uppercase; text-shadow: 0 1px 8px rgb(0 0 0 / 28%); }
+.christmas-level-control {
+  position: absolute;
+  top: 44%;
+  right: calc(var(--christmas-edge) + 1.6vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  transform: translateY(-20%);
+}
+.christmas-level-button {
+  display: grid; place-items: center; width: 56px; height: 56px;
+  padding: 0; border: 1px solid rgb(245 243 238 / 80%); border-radius: 50%;
+  color: #f5f3ee; background: rgb(10 16 19 / 19%); cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease, opacity 180ms ease;
+}
+.christmas-level-button:hover:not(:disabled) { background: rgb(245 243 238 / 9%); border-color: #f5f3ee; }
+.christmas-level-button:disabled { opacity: .62; cursor: default; }
+.christmas-level-button:disabled > span { opacity: .5; }
+.christmas-plus, .christmas-minus { position: relative; width: 14px; height: 14px; }
+.christmas-plus::before, .christmas-minus::before, .christmas-plus::after {
+  content: ''; position: absolute; left: 0; top: 50%; width: 14px; height: 1px; background: currentColor;
+}
+.christmas-plus::after { transform: rotate(90deg); }
+.christmas-level-readout { display: flex; flex-direction: column; align-items: center; gap: 9px; min-width: 90px; }
+.christmas-level-value { font-size: 49px; font-weight: 300; line-height: 1; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+.christmas-level-label { font-size: 10px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: rgb(245 243 238 / 87%); }
+.christmas-footer {
+  position: absolute; left: var(--christmas-edge); right: var(--christmas-edge); bottom: clamp(26px, 4.5vh, 50px);
+  display: flex; justify-content: space-between; align-items: end;
+  color: rgb(245 243 238 / 74%); font-size: 9px; font-weight: 400; line-height: 2.1; letter-spacing: .2em; text-transform: uppercase;
+}
+.christmas-footer > span > span { opacity: .7; }
+.christmas-level-button:focus-visible, .christmas-close:focus-visible { outline: 2px solid #ffe4a9; outline-offset: 6px; }
+@media (max-width: 760px) {
+  .christmas-copy { left: var(--christmas-edge); width: 44%; top: 23%; }
+  .christmas-copy h1 { font-size: clamp(24px, 4vw, 30px); }
+  .christmas-copy p { font-size: 8px; letter-spacing: .08em; }
+  .christmas-level-control { right: var(--christmas-edge); gap: 20px; }
+  .christmas-level-button { width: 44px; height: 44px; }
+  .christmas-level-value { font-size: 40px; }
+  .christmas-footer { font-size: 8px; letter-spacing: .08em; }
+  .christmas-brand { font-size: 18px; }
+  .christmas-header-actions { gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tree-bulb, .tree-bulb-halo, .tree-star-rays, .tree-star-halo, .christmas-reflection { transition: none; transition-delay: 0ms !important; }
+}

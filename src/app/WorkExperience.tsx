@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { PreviewArtwork } from './Gallery'
 import { artworks, type Artwork } from '../works/catalog'
+import { ChristmasExperience } from '../works/christmas/ChristmasExperience'
 
 // Temporary design-review delay; replace with resource readiness in checkpoint 13.
 const TRANSITION_PREVIEW_MIN_DURATION_MS = 2000
@@ -65,6 +66,10 @@ export function WorkExperience({
     )
   }
 
+  if (artwork.preview === 'christmas') {
+    return <ChristmasExperience onClose={onCancel} />
+  }
+
   return (
     <main className={`work-screen work-screen--${artwork.preview}`}>
       <header className="work-header">
@@ -75,9 +80,18 @@ export function WorkExperience({
         </button>
       </header>
 
-      <section className="work-placeholder" aria-label={`${artwork.title} placeholder`}>
-        <PreviewArtwork artwork={artwork} large />
-        <span className="placeholder-label">WORK IN PROGRESS</span>
+      <section
+        className={`work-placeholder${artwork.preview === 'christmas' ? ' work-placeholder--christmas' : ''}`}
+        aria-label={artwork.preview === 'christmas' ? artwork.title : `${artwork.title} placeholder`}
+      >
+        {artwork.preview === 'christmas' ? (
+          <ChristmasExperience onClose={onCancel} />
+        ) : (
+          <>
+            <PreviewArtwork artwork={artwork} large />
+            <span className="placeholder-label">WORK IN PROGRESS</span>
+          </>
+        )}
       </section>
 
       <footer className="work-footer">
