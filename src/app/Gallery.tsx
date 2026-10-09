@@ -28,7 +28,7 @@ export function Gallery({ selectedId, onSelectArtwork, onOpenAbout }: GalleryPro
   const centerCard = useCallback((index: number, behavior: ScrollBehavior = 'smooth') => {
     const track = trackRef.current
     const card = cardRefs.current[index]
-    if (!track || !card) return
+    if (!track || !card || track.clientWidth === 0) return
 
     const trackRect = track.getBoundingClientRect()
     const cardRect = card.getBoundingClientRect()
@@ -61,6 +61,7 @@ export function Gallery({ selectedId, onSelectArtwork, onOpenAbout }: GalleryPro
   }, [])
 
   const settleOnClosest = useCallback(() => {
+    if (!trackRef.current?.clientWidth) return
     const closestIndex = findClosestIndex()
     centerCard(closestIndex)
   }, [centerCard, findClosestIndex])
@@ -68,6 +69,7 @@ export function Gallery({ selectedId, onSelectArtwork, onOpenAbout }: GalleryPro
   useEffect(() => () => window.clearTimeout(settleTimerRef.current), [])
 
   function handleScroll() {
+    if (!trackRef.current?.clientWidth) return
     const closestIndex = findClosestIndex()
     setSelectedIndex((current) => current === closestIndex ? current : closestIndex)
   }
