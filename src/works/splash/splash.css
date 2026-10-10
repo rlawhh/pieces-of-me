@@ -1,0 +1,15 @@
+.work-screen--splash {
+  --page: #f8f9f6; --ink: #25302d; --muted: #78817b;
+  --gallery-sans: 'DM Sans', 'Helvetica Neue', system-ui, sans-serif;
+  font-family: var(--gallery-sans);
+}
+.work-screen--splash .work-brand, .work-screen--splash .work-brand span { font-family: var(--gallery-sans); font-style: normal; color: var(--ink); font-weight: 400; letter-spacing: -.035em; }
+.work-screen--splash .work-number { font-family: var(--gallery-sans); font-size: 13px; letter-spacing: .03em; }
+.work-screen--splash .work-close { border: 0; background: transparent; width: 30px; height: 30px; padding: 0; font: 300 28px/1 var(--gallery-sans); color: var(--ink); cursor: pointer; }
+.work-screen--splash .work-footer h1 { font-family: var(--gallery-sans); font-size: 26px; font-weight: 300; letter-spacing: -.04em; }
+.work-screen--splash .work-footer p { font-family: var(--gallery-sans); font-size: 10px; letter-spacing: .12em; }
+.work-screen--splash .work-placeholder { padding: 20px 0; }
+.splash-experience { position: relative; width: min(620px, 78vw, calc(100svh - 215px)); aspect-ratio: 1; }
+.splash-experience canvas { position: absolute; left: -12.5%; top: -12.5%; width: 125%; height: 125%; cursor: ns-resize; touch-action: none; user-select: none; }
+.splash-preview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.preview-artwork.preview-artwork--splash { background: #e5edf1; }

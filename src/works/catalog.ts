@@ -46,8 +46,8 @@ export const artworks = [
     id: 'dive',
     number: '06',
     title: 'Dive',
-    hint: 'DRAG UP OR DOWN',
-    preview: 'dive',
+    hint: 'DRAG DOWN TO SPLASH',
+    preview: 'splash',
   },
   {
     id: 'folding-city',

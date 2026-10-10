@@ -3,6 +3,7 @@ import type { PointerEvent, WheelEvent } from 'react'
 import { artworks, type Artwork } from '../works/catalog'
 import { ChristmasScene } from '../works/christmas/ChristmasScene'
 import { pixelPhotos } from '../works/pixel-brush/photos'
+import { SplashPreview } from '../works/splash/SplashExperience'
 
 interface GalleryProps {
   selectedId: string
@@ -257,7 +258,12 @@ export function PreviewArtwork({ artwork, large = false }: { artwork: Artwork; l
       className={`preview-artwork preview-artwork--${artwork.preview}${large ? ' is-large' : ''}`}
       aria-hidden="true"
     >
-      {artwork.preview === 'pixel' ? (
+      {artwork.preview === 'splash' ? (
+        <>
+          <SplashPreview />
+          <span className="preview-number">{artwork.number}</span>
+        </>
+      ) : artwork.preview === 'pixel' ? (
         <>
           <img className="pixel-preview-photo" src={pixelPhotos[0].src} alt="" draggable={false} />
           <span className="preview-number">{artwork.number}</span>
