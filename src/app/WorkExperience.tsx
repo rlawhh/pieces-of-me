@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { PreviewArtwork } from './Gallery'
 import { artworks, type Artwork } from '../works/catalog'
 import { ChristmasExperience } from '../works/christmas/ChristmasExperience'
+import { PixelBrushExperience } from '../works/pixel-brush/PixelBrushExperience'
 
 // Temporary design-review delay; replace with resource readiness in checkpoint 13.
 const TRANSITION_PREVIEW_MIN_DURATION_MS = 2000
@@ -74,7 +75,7 @@ export function WorkExperience({
     <main className={`work-screen work-screen--${artwork.preview}`}>
       <header className="work-header">
         <span className="work-brand">Pieces <span>of</span> Me</span>
-        <span className="work-number">{artwork.number}</span>
+        <span className="work-number">{artwork.preview === 'pixel' ? `${artwork.number} / ${String(artworks.length).padStart(2, '0')}` : artwork.number}</span>
         <button className="round-control work-close" type="button" onClick={onCancel} aria-label="Close artwork and return to gallery">
           ×
         </button>
@@ -82,9 +83,11 @@ export function WorkExperience({
 
       <section
         className={`work-placeholder${artwork.preview === 'christmas' ? ' work-placeholder--christmas' : ''}`}
-        aria-label={artwork.preview === 'christmas' ? artwork.title : `${artwork.title} placeholder`}
+        aria-label={artwork.preview === 'christmas' || artwork.preview === 'pixel' ? artwork.title : `${artwork.title} placeholder`}
       >
-        {artwork.preview === 'christmas' ? (
+        {artwork.preview === 'pixel' ? (
+          <PixelBrushExperience />
+        ) : artwork.preview === 'christmas' ? (
           <ChristmasExperience onClose={onCancel} />
         ) : (
           <>

@@ -18,7 +18,7 @@ export const artworks = [
     id: 'pixel-brush',
     number: '02',
     title: 'Pixel Brush',
-    hint: 'DRAG TO PIXELATE',
+    hint: 'CLICK + DRAG TO PIXELATE',
     preview: 'pixel',
   },
   {
