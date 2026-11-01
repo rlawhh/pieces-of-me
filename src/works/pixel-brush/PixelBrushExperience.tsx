@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } fr
 import { pixelPhotos } from './photos'
 import { BRUSH_RADIUS, createPixelBrush } from './pixelBrush'
 import './pixel-brush.css'
+import { loadArtworkImage } from '../resources'
 
 export function PixelBrushExperience() {
   const [selected, setSelected] = useState(0)
@@ -18,18 +19,16 @@ export function PixelBrushExperience() {
     let active = true
     engineRef.current = null
     pointerRef.current = null
-    const image = new Image()
-    image.onload = () => {
+    const controller = new AbortController()
+    loadArtworkImage(photo.src, controller.signal).then((image) => {
       if (!active || !canvasRef.current) return
       try {
         engineRef.current = createPixelBrush(canvasRef.current, image)
         setAspectRatio(canvasRef.current.width / canvasRef.current.height)
         setStatus('ready')
       } catch { setStatus('error') }
-    }
-    image.onerror = () => { if (active) setStatus('error') }
-    image.src = photo.src
-    return () => { active = false; image.onload = null; image.onerror = null }
+    }).catch(() => { if (active) setStatus('error') })
+    return () => { active = false; controller.abort() }
   }, [photo.src, retry])
 
   function point(event: PointerEvent<HTMLCanvasElement>) {

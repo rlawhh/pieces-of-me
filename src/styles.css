@@ -1036,6 +1036,10 @@ a:focus-visible {
   to { opacity: 1; }
 }
 
+.has-loading-error .loading-gauge-arc { animation-play-state: paused; opacity: .3; }
+.loading-retry { background: none; border: 1px solid #b5b8b0; padding: 8px 18px; color: inherit; font: inherit; font-size: 12px; cursor: pointer; }
+.loading-retry:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
 @keyframes loading-gauge-spin {
   to { transform: rotate(360deg); }
 }

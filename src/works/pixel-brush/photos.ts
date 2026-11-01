@@ -1,9 +1,9 @@
-import cherryNight from '../../assets/pixel-brush/selected/cherry-night.png'
-import flightWindow from '../../assets/pixel-brush/selected/flight-window.png'
-import cityWalk from '../../assets/pixel-brush/selected/city-walk.png'
-import hollywood from '../../assets/pixel-brush/selected/hollywood.png'
-import rainyEvening from '../../assets/pixel-brush/selected/rainy-evening.png'
-import campusLawn from '../../assets/pixel-brush/selected/campus-lawn.jpg'
+import cherryNight from '../../assets/pixel-brush/selected/optimized/cherry-night.jpg'
+import flightWindow from '../../assets/pixel-brush/selected/optimized/flight-window.jpg'
+import cityWalk from '../../assets/pixel-brush/selected/optimized/city-walk.jpg'
+import hollywood from '../../assets/pixel-brush/selected/optimized/hollywood.jpg'
+import rainyEvening from '../../assets/pixel-brush/selected/optimized/rainy-evening.jpg'
+import campusLawn from '../../assets/pixel-brush/selected/optimized/campus-lawn.jpg'
 
 // User-selected images in submission order; the first is also the gallery/loading preview.
 export const pixelPhotos = [

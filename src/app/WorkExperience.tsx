@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { PreviewArtwork } from './Gallery'
 import { artworks, type Artwork } from '../works/catalog'
 import { ChristmasExperience } from '../works/christmas/ChristmasExperience'
@@ -6,8 +6,7 @@ import { PixelBrushExperience } from '../works/pixel-brush/PixelBrushExperience'
 import { SplashExperience } from '../works/splash/SplashExperience'
 import { ChildhoodBreezeExperience } from '../works/childhood-breeze/ChildhoodBreezeExperience'
 
-// Temporary design-review delay; replace with resource readiness in checkpoint 13.
-const TRANSITION_PREVIEW_MIN_DURATION_MS = 2000
+import { prepareArtwork } from '../works/resources'
 
 interface WorkExperienceProps {
   artwork: Artwork
@@ -22,16 +21,27 @@ export function WorkExperience({
   onCancel,
   onTransitionComplete,
 }: WorkExperienceProps) {
+  const [loadFailed, setLoadFailed] = useState(false)
+  const [attempt, setAttempt] = useState(0)
   useEffect(() => {
     if (stage !== 'transition') return
-
-    const timeout = window.setTimeout(onTransitionComplete, TRANSITION_PREVIEW_MIN_DURATION_MS)
-    return () => window.clearTimeout(timeout)
-  }, [onTransitionComplete, stage])
+    const controller = new AbortController()
+    let active = true
+    let frame = 0
+    setLoadFailed(false)
+    prepareArtwork(artwork, controller.signal).then(() => {
+      if (active) frame = requestAnimationFrame(() => { if (active) onTransitionComplete() })
+    }).catch(() => {
+      if (!active) return
+      controller.abort()
+      setLoadFailed(true)
+    })
+    return () => { active = false; controller.abort(); cancelAnimationFrame(frame) }
+  }, [artwork, attempt, onTransitionComplete, stage])
 
   if (stage === 'transition') {
     return (
-      <main className={`transition-screen transition-screen--${artwork.preview}`}>
+      <main className={`transition-screen transition-screen--${artwork.preview}${loadFailed ? ' has-loading-error' : ''}`}>
         <header className="transition-header">
           <div className="transition-brand">Pieces of Me</div>
           <div className="transition-index" aria-label={`Work ${artwork.number} of ${artworks.length}`}>
@@ -62,7 +72,8 @@ export function WorkExperience({
                 ×
               </button>
             </div>
-            <span className="loading-label" role="status">LOADING</span>
+            <span className="loading-label" role="status">{loadFailed ? 'UNABLE TO LOAD' : 'LOADING'}</span>
+            {loadFailed && <button className="loading-retry" type="button" onClick={() => setAttempt((value) => value + 1)}>Retry</button>}
           </aside>
         </section>
       </main>
