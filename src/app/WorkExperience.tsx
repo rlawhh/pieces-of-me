@@ -70,14 +70,14 @@ export function WorkExperience({
   }
 
   if (artwork.preview === 'christmas') {
-    return <ChristmasExperience onClose={onCancel} />
+    return <ChristmasExperience onClose={onCancel} number={artwork.number} total={artworks.length} />
   }
 
   return (
     <main className={`work-screen work-screen--${artwork.preview}`}>
       <header className="work-header">
         <span className="work-brand">Pieces <span>of</span> Me</span>
-        <span className="work-number">{['pixel', 'splash', 'breeze'].includes(artwork.preview) ? `${artwork.number} / ${String(artworks.length).padStart(2, '0')}` : artwork.number}</span>
+        <span className="work-number">{artwork.number} / {String(artworks.length).padStart(2, '0')}</span>
         <button className="round-control work-close" type="button" onClick={onCancel} aria-label="Close artwork and return to gallery">
           ×
         </button>
@@ -94,7 +94,7 @@ export function WorkExperience({
         ) : artwork.preview === 'pixel' ? (
           <PixelBrushExperience />
         ) : artwork.preview === 'christmas' ? (
-          <ChristmasExperience onClose={onCancel} />
+          <ChristmasExperience onClose={onCancel} number={artwork.number} total={artworks.length} />
         ) : (
           <>
             <PreviewArtwork artwork={artwork} large />

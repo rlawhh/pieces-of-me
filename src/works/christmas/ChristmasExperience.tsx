@@ -3,9 +3,11 @@ import { ChristmasScene } from './ChristmasScene'
 
 interface ChristmasExperienceProps {
   onClose: () => void
+  number: string
+  total: number
 }
 
-export function ChristmasExperience({ onClose }: ChristmasExperienceProps) {
+export function ChristmasExperience({ onClose, number, total }: ChristmasExperienceProps) {
   const [level, setLevel] = useState(0)
 
   function changeLevel(amount: number) {
@@ -19,7 +21,7 @@ export function ChristmasExperience({ onClose }: ChristmasExperienceProps) {
       <header className="christmas-header">
         <span className="christmas-brand">Pieces of Me</span>
         <div className="christmas-header-actions">
-          <span className="christmas-index">04 <span>/</span> 08</span>
+          <span className="christmas-index">{number} <span>/</span> {String(total).padStart(2, '0')}</span>
           <button type="button" className="christmas-close" onClick={onClose} aria-label="Close artwork and return to gallery">
             <span aria-hidden="true" />
           </button>

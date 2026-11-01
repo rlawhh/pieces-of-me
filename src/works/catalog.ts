@@ -6,7 +6,8 @@ export interface Artwork {
   preview: string
 }
 
-export const artworks = [
+// Preserve the original eight-piece plan and its exhibition numbers.
+export const originalArtworks = [
   {
     id: 'a-day-in-new-york',
     number: '01',
@@ -64,3 +65,10 @@ export const artworks = [
     preview: 'breeze',
   },
 ] as const satisfies readonly Artwork[]
+
+// Submission edition: stable IDs/assets, with numbers local to this exhibition.
+const submissionIds = ['pixel-brush', 'christmas-in-new-york', 'dive', 'childhood-breeze']
+export const artworks: readonly Artwork[] = submissionIds.map((id, index) => ({
+  ...originalArtworks.find((artwork) => artwork.id === id)!,
+  number: String(index + 1).padStart(2, '0'),
+}))
