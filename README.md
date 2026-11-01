@@ -1,6 +1,8 @@
 # Pieces of Me
 
-**[Pieces of Me — 작품 감상하기](https://pieces-of-me-two.vercel.app/)** · [GitHub 저장소](https://github.com/rlawhh/pieces-of-me)
+### [↗ Pieces of Me 웹사이트에서 체험하기](https://pieces-of-me-two.vercel.app/)
+
+설치 없이 브라우저에서 4개의 인터랙티브 작품을 직접 체험할 수 있습니다.
 
 ## 1. 제작한 것 소개
 
