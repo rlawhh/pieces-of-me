@@ -4,6 +4,7 @@ import { artworks, type Artwork } from '../works/catalog'
 import { ChristmasExperience } from '../works/christmas/ChristmasExperience'
 import { PixelBrushExperience } from '../works/pixel-brush/PixelBrushExperience'
 import { SplashExperience } from '../works/splash/SplashExperience'
+import { ChildhoodBreezeExperience } from '../works/childhood-breeze/ChildhoodBreezeExperience'
 
 // Temporary design-review delay; replace with resource readiness in checkpoint 13.
 const TRANSITION_PREVIEW_MIN_DURATION_MS = 2000
@@ -76,7 +77,7 @@ export function WorkExperience({
     <main className={`work-screen work-screen--${artwork.preview}`}>
       <header className="work-header">
         <span className="work-brand">Pieces <span>of</span> Me</span>
-        <span className="work-number">{['pixel', 'splash'].includes(artwork.preview) ? `${artwork.number} / ${String(artworks.length).padStart(2, '0')}` : artwork.number}</span>
+        <span className="work-number">{['pixel', 'splash', 'breeze'].includes(artwork.preview) ? `${artwork.number} / ${String(artworks.length).padStart(2, '0')}` : artwork.number}</span>
         <button className="round-control work-close" type="button" onClick={onCancel} aria-label="Close artwork and return to gallery">
           ×
         </button>
@@ -84,9 +85,11 @@ export function WorkExperience({
 
       <section
         className={`work-placeholder${artwork.preview === 'christmas' ? ' work-placeholder--christmas' : ''}`}
-        aria-label={['christmas', 'pixel', 'splash'].includes(artwork.preview) ? artwork.title : `${artwork.title} placeholder`}
+        aria-label={['christmas', 'pixel', 'splash', 'breeze'].includes(artwork.preview) ? artwork.title : `${artwork.title} placeholder`}
       >
-        {artwork.preview === 'splash' ? (
+        {artwork.preview === 'breeze' ? (
+          <ChildhoodBreezeExperience />
+        ) : artwork.preview === 'splash' ? (
           <SplashExperience />
         ) : artwork.preview === 'pixel' ? (
           <PixelBrushExperience />

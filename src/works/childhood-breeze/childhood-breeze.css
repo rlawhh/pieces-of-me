@@ -1,0 +1,10 @@
+.work-screen--breeze { --page: #f4f3eb; --ink: #343d32; --muted: #798071; background: var(--page); }
+.work-screen--breeze .work-placeholder { padding: 22px 0; }
+.breeze-experience { width: min(1120px, 100%, calc((100svh - 210px) * 1.5556)); aspect-ratio: 14 / 9; overflow: hidden; }
+.breeze-experience canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.work-screen--breeze .work-number { font-size: 13px; letter-spacing: .05em; }
+.work-screen--breeze .work-footer h1 { font-size: clamp(24px, 2.4vw, 32px); font-weight: 400; }
+.work-screen--breeze .work-footer p { font-size: 10px; letter-spacing: .12em; }
+.breeze-preview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.preview-artwork--breeze .preview-number { color: #34432e; }
+@media (max-height: 560px) { .breeze-experience { width: min(100%, calc((100svh - 180px) * 1.5556)); } }

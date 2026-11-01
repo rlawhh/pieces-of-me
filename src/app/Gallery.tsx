@@ -4,6 +4,7 @@ import { artworks, type Artwork } from '../works/catalog'
 import { ChristmasScene } from '../works/christmas/ChristmasScene'
 import { pixelPhotos } from '../works/pixel-brush/photos'
 import { SplashPreview } from '../works/splash/SplashExperience'
+import { ChildhoodBreezePreview } from '../works/childhood-breeze/ChildhoodBreezeExperience'
 
 interface GalleryProps {
   selectedId: string
@@ -27,6 +28,9 @@ export function Gallery({ selectedId, onSelectArtwork, onOpenAbout }: GalleryPro
     Math.max(0, artworks.findIndex((artwork) => artwork.id === selectedId)),
   )
   const [isDragging, setIsDragging] = useState(false)
+  const selectionRef = useRef(selectedIndex)
+  const visibleWidthRef = useRef(0)
+  selectionRef.current = selectedIndex
 
   const centerCard = useCallback((index: number, behavior: ScrollBehavior = 'smooth') => {
     const track = trackRef.current
@@ -40,6 +44,18 @@ export function Gallery({ selectedId, onSelectArtwork, onOpenAbout }: GalleryPro
     track.scrollTo({ left, behavior })
     setSelectedIndex(index)
   }, [])
+
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    const observer = new ResizeObserver(() => {
+      if (!track.clientWidth || track.clientWidth === visibleWidthRef.current) return
+      visibleWidthRef.current = track.clientWidth
+      centerCard(selectionRef.current, 'auto')
+    })
+    observer.observe(track)
+    return () => observer.disconnect()
+  }, [centerCard])
 
   const findClosestIndex = useCallback(() => {
     const track = trackRef.current
@@ -73,6 +89,7 @@ export function Gallery({ selectedId, onSelectArtwork, onOpenAbout }: GalleryPro
 
   function handleScroll() {
     if (!trackRef.current?.clientWidth) return
+    if (trackRef.current.clientWidth !== visibleWidthRef.current) return
     const closestIndex = findClosestIndex()
     setSelectedIndex((current) => current === closestIndex ? current : closestIndex)
   }
@@ -258,7 +275,12 @@ export function PreviewArtwork({ artwork, large = false }: { artwork: Artwork; l
       className={`preview-artwork preview-artwork--${artwork.preview}${large ? ' is-large' : ''}`}
       aria-hidden="true"
     >
-      {artwork.preview === 'splash' ? (
+      {artwork.preview === 'breeze' ? (
+        <>
+          <ChildhoodBreezePreview />
+          <span className="preview-number">{artwork.number}</span>
+        </>
+      ) : artwork.preview === 'splash' ? (
         <>
           <SplashPreview />
           <span className="preview-number">{artwork.number}</span>
