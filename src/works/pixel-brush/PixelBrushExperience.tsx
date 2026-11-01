@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState, type PointerEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
 import { pixelPhotos } from './photos'
-import { BRUSH_RADIUS, IMAGE_WIDTH, IMAGE_HEIGHT, createPixelBrush } from './pixelBrush'
+import { BRUSH_RADIUS, createPixelBrush } from './pixelBrush'
 import './pixel-brush.css'
 
 export function PixelBrushExperience() {
   const [selected, setSelected] = useState(0)
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
   const [retry, setRetry] = useState(0)
+  const [aspectRatio, setAspectRatio] = useState(1)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const cursorRef = useRef<HTMLSpanElement>(null)
   const engineRef = useRef<ReturnType<typeof createPixelBrush> | null>(null)
@@ -22,6 +23,7 @@ export function PixelBrushExperience() {
       if (!active || !canvasRef.current) return
       try {
         engineRef.current = createPixelBrush(canvasRef.current, image)
+        setAspectRatio(canvasRef.current.width / canvasRef.current.height)
         setStatus('ready')
       } catch { setStatus('error') }
     }
@@ -32,15 +34,16 @@ export function PixelBrushExperience() {
 
   function point(event: PointerEvent<HTMLCanvasElement>) {
     const rect = event.currentTarget.getBoundingClientRect()
-    const x = (event.clientX - rect.left) * IMAGE_WIDTH / rect.width
-    const y = (event.clientY - rect.top) * IMAGE_HEIGHT / rect.height
+    const width = event.currentTarget.width, height = event.currentTarget.height
+    const x = (event.clientX - rect.left) * width / rect.width
+    const y = (event.clientY - rect.top) * height / rect.height
     const cursor = cursorRef.current
     if (cursor) {
       cursor.style.left = `${event.clientX - rect.left}px`
       cursor.style.top = `${event.clientY - rect.top}px`
-      cursor.style.width = `${BRUSH_RADIUS * 2 * rect.width / IMAGE_WIDTH}px`
-      cursor.style.height = `${BRUSH_RADIUS * 2 * rect.height / IMAGE_HEIGHT}px`
-      cursor.style.opacity = x >= 0 && x <= IMAGE_WIDTH && y >= 0 && y <= IMAGE_HEIGHT ? '1' : '0'
+      cursor.style.width = `${BRUSH_RADIUS * 2 * rect.width / width}px`
+      cursor.style.height = `${BRUSH_RADIUS * 2 * rect.height / height}px`
+      cursor.style.opacity = x >= 0 && x <= width && y >= 0 && y <= height ? '1' : '0'
     }
     return { x, y }
   }
@@ -77,7 +80,7 @@ export function PixelBrushExperience() {
   }
 
   return (
-    <div className="pixel-experience">
+    <div className="pixel-experience" style={{ '--photo-ratio': aspectRatio } as CSSProperties}>
       <div className="pixel-stage">
         <canvas ref={canvasRef} aria-label={`${photo.label}. Click and drag to pixelate.`}
           onPointerDown={start} onPointerMove={move} onPointerUp={stop} onPointerCancel={stop}
