@@ -48,8 +48,18 @@ const bulbs = treeLightPositions.map(([x, y], index) => ({
 
 // Center of the unlit topper in the photograph, mapped to the SVG viewBox.
 const star = { x: 805.5, y: 103.5 }
-const starTips = [[-5, -22], [8, -13], [16, -8], [20, -2], [16, 6], [8, 17],
-  [0, 24], [-7, 15], [-15, 8], [-18, 5], [-12, -2], [-18, -10]]
+// A compact crystal topper: long structural points and shorter facets between them.
+const starFacets = Array.from({ length: 18 }, (_, index) => {
+  const angle = -Math.PI / 2 + index * Math.PI / 9
+  const radius = index % 3 === 0 ? 27 : index % 3 === 1 ? 17 : 12
+  const dx = Math.cos(angle), dy = Math.sin(angle)
+  const base = 4.2, halfWidth = index % 3 === 0 ? 2.6 : 1.65
+  return { tip: `${dx * radius},${dy * radius}`,
+    left: `${dx * base - dy * halfWidth},${dy * base + dx * halfWidth}`,
+    right: `${dx * base + dy * halfWidth},${dy * base - dx * halfWidth}`,
+    ridgeX: dx * radius * .89, ridgeY: dy * radius * .89,
+    opacity: index % 3 === 0 ? 1 : .84 }
+})
 
 export function ChristmasScene({ level, className = '' }: ChristmasSceneProps) {
   const id = useId().replace(/:/g, '')
@@ -74,14 +84,25 @@ export function ChristmasScene({ level, className = '' }: ChristmasSceneProps) {
           </g>
         ))}
         <radialGradient id={`${id}-star-bloom`}>
-          <stop stopColor={lighting.style === 'gold' ? '#ffd88b' : '#fff4dd'} stopOpacity=".6" />
-          <stop offset=".3" stopColor="#fff6df" stopOpacity=".16" />
-          <stop offset="1" stopColor="#f7e8c7" stopOpacity="0" />
+          <stop stopColor="#fff7df" stopOpacity=".54" />
+          <stop offset=".25" stopColor="#ffe9b9" stopOpacity=".22" />
+          <stop offset=".65" stopColor="#e9cf96" stopOpacity=".05" />
+          <stop offset="1" stopColor="#e9cf96" stopOpacity="0" />
         </radialGradient>
-        <radialGradient id={`${id}-star-crystal`} gradientUnits="userSpaceOnUse" cx="0" cy="0" r="25">
-          <stop stopColor="#fff9e9" stopOpacity=".88" />
-          <stop offset=".45" stopColor="#ecdfc0" stopOpacity=".6" />
-          <stop offset="1" stopColor="#e3d4af" stopOpacity=".1" />
+        <linearGradient id={`${id}-star-light`} x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#ffffff" />
+          <stop offset=".5" stopColor="#fff7df" />
+          <stop offset="1" stopColor="#d9c79f" />
+        </linearGradient>
+        <linearGradient id={`${id}-star-shade`} x1="1" y1="0" x2="0" y2="1">
+          <stop stopColor="#e5d9be" />
+          <stop offset=".55" stopColor="#bdaa82" />
+          <stop offset="1" stopColor="#f5e9cb" />
+        </linearGradient>
+        <radialGradient id={`${id}-star-core`} cx=".35" cy=".3" r=".8">
+          <stop stopColor="#fffef6" />
+          <stop offset=".48" stopColor="#fff3d4" />
+          <stop offset="1" stopColor="#cab68c" />
         </radialGradient>
         <image id={`${id}-photo`} href={christmasNight} width="1600" height="1000" preserveAspectRatio="xMidYMid slice" />
         <radialGradient id={`${id}-glow`}>
@@ -106,20 +127,20 @@ export function ChristmasScene({ level, className = '' }: ChristmasSceneProps) {
         </g>
       ))}
       <g className={`tree-star${level === 5 ? ' is-lit' : ''}`} transform={`translate(${star.x} ${star.y})`}>
-        <circle className="tree-star-halo" r="30" fill={`url(#${id}-star-bloom)`} />
-        <g className="tree-star-rays" transform="scale(.82)" stroke={`url(#${id}-star-crystal)`} strokeLinecap="round">
-          {lighting.style === 'rockefeller' && <>
-            <circle r="10" fill={`url(#${id}-star-bloom)`} stroke="none" />
-            {starTips.map(([x, y], index) => {
-              const length = Math.hypot(x, y)
-              const width = index % 2 ? .85 : 1.2
-              const dx = -y / length * width
-              const dy = x / length * width
-              return <polygon key={index} points={`${dx},${dy} ${x},${y} ${-dx},${-dy}`} fill={`url(#${id}-star-crystal)`} stroke="none" opacity=".65" />
-            })}
-          </>}
-          {starTips.map(([x, y], index) => <path key={index} d={`M0 0L${x} ${y}`} strokeWidth={index % 2 ? .8 : 1.15} />)}
-          <circle r="2.5" fill="#fff3dc" opacity=".9" stroke="none" />
+        <circle className="tree-star-halo" r="35" fill={`url(#${id}-star-bloom)`} />
+        <g className="tree-star-rays" strokeLinejoin="round">
+          {starFacets.map((facet, index) => (
+            <g key={index} opacity={facet.opacity}>
+              <polygon points={`0,0 ${facet.left} ${facet.tip}`} fill={`url(#${id}-star-light)`} />
+              <polygon points={`0,0 ${facet.tip} ${facet.right}`} fill={`url(#${id}-star-shade)`} />
+              <path d={`M0 0L${facet.ridgeX} ${facet.ridgeY}`} fill="none" stroke="#fffdf0" strokeWidth=".32" opacity=".65" />
+            </g>
+          ))}
+          <path d="M0 -6.2L5.4 -3.1L5.4 3.1L0 6.2L-5.4 3.1L-5.4 -3.1Z"
+            fill={`url(#${id}-star-core)`} stroke="#fff7df" strokeWidth=".35" />
+          <path d="M-5.4 -3.1L0 0L0 6.2M0 0L5.4 -3.1M0 0L0 -6.2"
+            fill="none" stroke="#a18b634d" strokeWidth=".4" />
+          <circle r="1.8" cx="-.7" cy="-.8" fill="#fffdf1" opacity=".85" />
         </g>
       </g>
       </g>
