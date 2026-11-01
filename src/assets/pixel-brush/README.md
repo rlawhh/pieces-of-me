@@ -21,8 +21,23 @@ to fit within 1500 × 900 pixels; this changes rendering resolution without
 cropping or modifying the stored photographs. Preview thumbnails retain their
 existing frame and use a centre crop.
 
-The second and third originals are approximately 18 MB each. Web asset
-compression has not been performed; deployment transfer size needs review.
+The second and third originals are approximately 18 MB each. They are preserved
+as source files; the deployed selection now imports the optimized copies below.
+
+## Deployment optimization — 2026-11-01
+
+`selected/optimized/` contains the six deployed JPEGs. The large portrait images
+were resized to 1536 × 2048 pixels, preserving the full frame; the other images
+retain their dimensions. JPEG encoding used quality 90 with the existing Windows
+image processing library. `campus-lawn.jpg` was copied without re-encoding to
+avoid increasing its size. No runtime dependency was added.
+
+The six originals total 40,023,767 bytes; the deployed copies total 1,908,726
+bytes (about 95.2% smaller). The unused originals remain in this repository but
+are not included in Vite's emitted production assets. This is a byte-size
+comparison, not a measured page-load speed improvement. The use confirmation
+above applies to these copies as well; optimization does not establish a new
+license or independently verify the original source.
 
 ## Previous prototype assets — no longer selected
 
