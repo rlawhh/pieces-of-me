@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 references/
+
+# Legacy Dive prototype (kept locally; active Dive uses src/works/splash/)
+/src/works/dive/
