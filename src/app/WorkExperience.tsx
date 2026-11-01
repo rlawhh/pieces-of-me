@@ -8,6 +8,9 @@ import { ChildhoodBreezeExperience } from '../works/childhood-breeze/ChildhoodBr
 
 import { prepareArtwork } from '../works/resources'
 
+// Keep the transition design visible while still waiting for actual resources.
+const MIN_TRANSITION_DURATION_MS = 2000
+
 interface WorkExperienceProps {
   artwork: Artwork
   stage: 'transition' | 'work'
@@ -28,15 +31,20 @@ export function WorkExperience({
     const controller = new AbortController()
     let active = true
     let frame = 0
+    let minimumTimer = 0
+    const minimumDuration = new Promise<void>((resolve) => {
+      minimumTimer = window.setTimeout(resolve, MIN_TRANSITION_DURATION_MS)
+    })
     setLoadFailed(false)
-    prepareArtwork(artwork, controller.signal).then(() => {
+    Promise.all([prepareArtwork(artwork, controller.signal), minimumDuration]).then(() => {
       if (active) frame = requestAnimationFrame(() => { if (active) onTransitionComplete() })
     }).catch(() => {
       if (!active) return
+      window.clearTimeout(minimumTimer)
       controller.abort()
       setLoadFailed(true)
     })
-    return () => { active = false; controller.abort(); cancelAnimationFrame(frame) }
+    return () => { active = false; window.clearTimeout(minimumTimer); controller.abort(); cancelAnimationFrame(frame) }
   }, [artwork, attempt, onTransitionComplete, stage])
 
   if (stage === 'transition') {
